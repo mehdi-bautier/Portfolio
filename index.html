@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Non référencé : les moteurs de recherche n'indexent pas cette page -->
+<meta name="robots" content="noindex, nofollow">
+<title>Mehdi Bautier – Journaliste data</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1d1a2e;
+    --paper: #f6f5fb;
+    --violet: #5b1fd6;
+    --lilac: #b9a5f0;
+    --mist: #e7e3f5;
+    --muted: #5c5874;
+    --card: #ffffff;
+    --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+    --text: "Source Serif 4", Georgia, "Times New Roman", serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #ece9f7;
+      --paper: #14121f;
+      --violet: #a98bff;
+      --lilac: #5d4a9e;
+      --mist: #262238;
+      --muted: #a7a2c0;
+      --card: #1c1930;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--text);
+    font-size: 1.125rem;
+    line-height: 1.65;
+  }
+  a { color: var(--violet); text-underline-offset: 0.2em; }
+  a:focus-visible, button:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; border-radius: 4px; }
+  .wrap { max-width: 68rem; margin: 0 auto; padding: 0 1.5rem; }
+  .prose { max-width: 38rem; }
+
+  /* Navigation */
+  nav { padding: 1.5rem 0; }
+  nav .wrap { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+  .brand { font-family: var(--display); font-weight: 700; font-size: 1.1rem; color: var(--ink); text-decoration: none; }
+  nav ul { list-style: none; display: flex; gap: 1.5rem; margin: 0; padding: 0; font-family: var(--display); font-size: 0.95rem; }
+  nav ul a { color: var(--muted); text-decoration: none; }
+  nav ul a:hover { color: var(--violet); }
+
+  /* Hero : le range plot comme emblème */
+  .hero { padding: 3.5rem 0 4.5rem; }
+  .hero h1 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(2.4rem, 6vw, 4.4rem);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin: 0 0 1.5rem;
+    max-width: 14ch;
+  }
+  .hero p { color: var(--muted); max-width: 34rem; margin: 0; }
+  .plot { margin-top: 3rem; width: 100%; max-width: 40rem; height: auto; display: block; }
+  .plot .track { stroke: var(--mist); stroke-width: 10; stroke-linecap: round; }
+  .plot .from { fill: var(--lilac); }
+  .plot .to { fill: var(--violet); }
+  .plot text { font-family: var(--display); font-size: 13px; fill: var(--muted); }
+  .plot .seg { stroke: var(--violet); stroke-width: 10; stroke-linecap: round; stroke-dasharray: 400; stroke-dashoffset: 400; animation: draw 1.4s ease-out 0.3s forwards; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @media (prefers-reduced-motion: reduce) { .plot .seg { animation: none; stroke-dashoffset: 0; } }
+
+  section { padding: 4rem 0; border-top: 1px solid var(--mist); }
+  h2 { font-family: var(--display); font-weight: 700; font-size: clamp(1.7rem, 3.5vw, 2.4rem); line-height: 1.1; margin: 0 0 1rem; letter-spacing: -0.01em; }
+  h3 { font-family: var(--display); font-weight: 500; font-size: 1.35rem; line-height: 1.25; margin: 0 0 0.6rem; }
+  .intro { color: var(--muted); margin: 0 0 2.5rem; }
+
+  /* Articles à la une : texte + dataviz côte à côte */
+  .feature { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 2.5rem; align-items: start; padding: 2.5rem 0; }
+  .feature + .feature { border-top: 1px dashed var(--mist); }
+  .feature .meta { font-family: var(--display); font-size: 0.9rem; color: var(--muted); margin: 0 0 0.75rem; }
+  .feature p { margin: 0 0 1rem; }
+  .viz { background: #fff; border-radius: 10px; padding: 0.5rem; }
+  .viz iframe { width: 100%; min-width: 100%; border: none; display: block; }
+  @media (max-width: 760px) { .feature { grid-template-columns: 1fr; gap: 1.25rem; } }
+
+  /* Autres articles */
+  .list { list-style: none; margin: 0; padding: 0; }
+  .list li { padding: 1.1rem 0; border-bottom: 1px solid var(--mist); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 1rem; align-items: baseline; }
+  .list a { font-family: var(--display); font-weight: 500; font-size: 1.1rem; text-decoration: none; color: var(--ink); }
+  .list a:hover { color: var(--violet); text-decoration: underline; }
+  .list span { font-family: var(--display); font-size: 0.9rem; color: var(--muted); white-space: nowrap; }
+
+  /* Méthode : une vraie séquence */
+  .steps { list-style: none; counter-reset: s; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.5rem; }
+  .steps li { counter-increment: s; border-top: 4px solid var(--lilac); padding-top: 1rem; }
+  .steps li::before { content: counter(s); font-family: var(--display); font-weight: 700; color: var(--violet); font-size: 1.6rem; display: block; margin-bottom: 0.25rem; }
+  .steps li:last-child { border-top-color: var(--violet); }
+  .steps p { font-size: 1rem; margin: 0; color: var(--muted); }
+  @media (max-width: 760px) { .steps { grid-template-columns: 1fr 1fr; } }
+
+  /* Système IA */
+  .ia { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 2.5rem; }
+  .ia ul { margin: 0; padding-left: 1.2rem; }
+  .ia li { margin-bottom: 0.5rem; }
+  @media (max-width: 760px) { .ia { grid-template-columns: 1fr; } }
+
+  .gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+  @media (max-width: 760px) { .gallery { grid-template-columns: 1fr; } }
+
+  .enquetes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.5rem 3rem; }
+  .enquetes article { border-left: 4px solid var(--lilac); padding-left: 1.25rem; }
+  .enquetes h3 a { color: var(--ink); text-decoration: none; }
+  .enquetes h3 a:hover { color: var(--violet); text-decoration: underline; }
+  .enquetes .meta { font-family: var(--display); font-size: 0.9rem; color: var(--muted); margin: 0 0 0.5rem; }
+  .enquetes p { margin: 0; }
+  @media (max-width: 760px) { .enquetes { grid-template-columns: 1fr; } }
+
+  .skills { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem 2.5rem; }
+  .skills div { border-top: 4px solid var(--lilac); padding-top: 1rem; }
+  .skills p { margin: 0; font-size: 1rem; color: var(--muted); }
+  @media (max-width: 900px) { .skills { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .skills { grid-template-columns: 1fr; } }
+
+  .tools { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 0; padding: 0; list-style: none; }
+  .tools li { font-family: var(--display); font-size: 0.95rem; background: var(--mist); padding: 0.35rem 0.85rem; border-radius: 999px; }
+
+  footer { padding: 4rem 0 5rem; border-top: 1px solid var(--mist); }
+  footer .contact { font-family: var(--display); font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 700; margin: 0 0 1rem; }
+  footer .links { display: flex; gap: 1.5rem; flex-wrap: wrap; font-family: var(--display); }
+</style>
+</head>
+<body>
+
+<nav aria-label="Navigation principale">
+  <div class="wrap">
+    <a class="brand" href="#">Mehdi Bautier</a>
+    <ul>
+      <li><a href="#savoir-faire">Savoir-faire</a></li>
+      <li><a href="#articles">Data</a></li>
+      <li><a href="#enquetes">Enquêtes</a></li>
+      <li><a href="#portraits">Portraits</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>Enquêter, vérifier, raconter</h1>
+    <p>Journaliste et rédacteur web, je m'empare de n'importe quel sujet pour en tirer des articles fiables et lisibles : enquêtes de terrain, décryptages de données, portraits et actualité chaude.</p>
+
+    <!-- Emblème : un range plot, la viz signature -->
+    <svg class="plot" viewBox="0 0 640 150" role="img" aria-label="Illustration : un graphique en haltères qui compare deux valeurs sur trois lignes">
+      <g>
+        <line class="track" x1="40" y1="30" x2="600" y2="30"/>
+        <line class="seg" x1="140" y1="30" x2="470" y2="30"/>
+        <circle class="from" cx="140" cy="30" r="11"/><circle class="to" cx="470" cy="30" r="11"/>
+      </g>
+      <g>
+        <line class="track" x1="40" y1="75" x2="600" y2="75"/>
+        <line class="seg" x1="300" y1="75" x2="560" y2="75"/>
+        <circle class="from" cx="300" cy="75" r="11"/><circle class="to" cx="560" cy="75" r="11"/>
+      </g>
+      <g>
+        <line class="track" x1="40" y1="120" x2="600" y2="120"/>
+        <line class="seg" x1="90" y1="120" x2="220" y2="120"/>
+        <circle class="from" cx="90" cy="120" r="11"/><circle class="to" cx="220" cy="120" r="11"/>
+      </g>
+    </svg>
+  </div>
+</header>
+
+<main>
+  <section id="savoir-faire">
+    <div class="wrap">
+      <h2>Ce que j'apporte à une rédaction</h2>
+      <p class="intro prose">Une méthode rigoureuse qui s'adapte à tous les sujets, de l'actualité chaude au format long. Chaque chiffre publié provient d'une source primaire, vérifiée à la ligne près.</p>
+      <div class="skills">
+        <div><h3>Enquête et reportage</h3><p>Recueillir des témoignages, croiser les regards d'experts, d'institutions et du terrain, et construire un récit solide.</p></div>
+        <div><h3>Journalisme de données</h3><p>Trouver la donnée publique, la nettoyer, l'analyser et la mettre en forme dans des visualisations claires.</p></div>
+        <div><h3>Portraits et interviews</h3><p>Faire émerger des parcours singuliers et donner la parole à celles et ceux qui vivent l'actualité.</p></div>
+        <div><h3>Actualité chaude</h3><p>Traiter une annonce, une publication officielle ou un événement dans des délais serrés, sans sacrifier la vérification.</p></div>
+        <div><h3>Écriture web et SEO</h3><p>Adapter le format et le ton à chaque public, du décryptage au guide pratique, avec une solide maîtrise du référencement.</p></div>
+        <div><h3>IA au service de la rédaction</h3><p>Concevoir des workflows et des assistants IA qui accélèrent la production d'une équipe en garantissant la qualité éditoriale.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="parcours">
+    <div class="wrap ia">
+      <div>
+        <h2>Chez Diplomeo</h2>
+        <p>Rédacteur au sein de Diplomeo, le média d'orientation du groupe Hellowork, j'ai couvert l'enseignement supérieur, le lycée et la vie étudiante pour un public de lycéens, d'étudiants et de parents.</p>
+      </div>
+      <ul>
+        <li>Des enquêtes et reportages sur Parcoursup, Mon Master, le logement, la précarité et la santé mentale des étudiants</li>
+        <li>Des décryptages data à partir des publications officielles (ministère, Parcoursup, insertion des diplômés, résultats du bac), avec cartes et graphiques Datawrapper</li>
+        <li>Des portraits d'étudiants, d'apprentis et de volontaires</li>
+        <li>Un système de skills pour Claude qui formalise chaque format d'article, les règles de la marque et le ton de chaque rédacteur, utilisé par l'équipe</li>
+        <li>Un modèle de prévision des sujets du bac couvrant les 13 spécialités, livré avec un guide d'onboarding</li>
+        <li>Des formations internes à l'analyse de données pour les collègues</li>
+      </ul>
+    </div>
+  </section>
+  <section id="articles">
+    <div class="wrap">
+      <h2>Décryptages data</h2>
+      <p class="intro prose">Une sélection de décryptages publiés sur Diplomeo, avec leurs dataviz interactives.</p>
+
+      <!-- Article 1 -->
+      <article class="feature">
+        <div>
+          <p class="meta">Diplomeo, octobre 2026</p>
+          <h3><a href="https://diplomeo.com/actualite-parcoursup_2026_bilan_chiffres">Parcoursup 2026 : un bilan en demi-teinte, entre affluence et perte de confiance</a></h3>
+          <p>Lecture critique du bilan ministériel et du baromètre CSA : écarts entre voies du bac, accès des bacheliers professionnels au BTS et recul de la confiance des lycéens.</p>
+        </div>
+        <div class="viz">
+          <iframe title="Baromètre Parcoursup 2025 et 2026" src="https://datawrapper.dwcdn.net/fpNDq/" scrolling="no" height="420" loading="lazy"></iframe>
+        </div>
+      </article>
+
+      <!-- Article 2 -->
+      <article class="feature">
+        <div>
+          <p class="meta">Diplomeo, octobre 2026</p>
+          <h3><a href="https://diplomeo.com/actualite-nombre_etudiants_boursiers_baisse">Bourses sur critères sociaux : la part d'étudiants boursiers au plus bas depuis 2012</a></h3>
+          <p>Analyse de la note du SIES : un barème non revalorisé, des filières sélectives qui décrochent et des écarts marqués entre académies.</p>
+        </div>
+        <div class="viz">
+          <iframe title="Part de boursiers par formation, 2012-2013 et 2025-2026" src="https://datawrapper.dwcdn.net/VeAXl/" scrolling="no" height="420" loading="lazy"></iframe>
+        </div>
+      </article>
+
+      <h3 style="margin-top:3rem">Autres publications</h3>
+      <ul class="list">
+        <li><a href="https://diplomeo.com/actualite-bac_2026_reussite_academies">Bac général et techno 2026 : les académies où l'on réussit le mieux</a><span>Juillet 2026</span></li>
+        <li><a href="https://diplomeo.com/actualite-bac_pro_2026_reussite_academies">Bac pro 2026 : la carte des académies où l'on réussit le mieux</a><span>Juillet 2026</span></li>
+        <li><a href="https://diplomeo.com/actualite-specialites_bac_parcoursup">Spécialités du bac : quelles combinaisons ouvrent le plus de portes sur Parcoursup ?</a><span>Juillet 2026</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="enquetes">
+    <div class="wrap">
+      <h2>Enquêtes</h2>
+      <p class="intro prose">Des formats longs sur Parcoursup, Mon Master, le logement, la santé mentale et la vie étudiante, construits à partir de témoignages d'étudiants, d'enseignants, de responsables d'établissement et de représentants syndicaux.</p>
+      <div class="enquetes">
+        <article>
+          <p class="meta">Novembre 2025</p>
+          <h3><a href="https://diplomeo.com/actualite-crise_logement_etudiant_pistes_ameliorations">Crise du logement étudiant : « Sans toit, pas d'études, pas d'emploi, pas d'autonomie »</a></h3>
+          <p>Constructions en berne, loyers élevés, concurrence accrue : experts et chercheurs décortiquent les rouages d'une crise qui pousse une partie des étudiants à abandonner leurs études.</p>
+        </article>
+        <article>
+          <p class="meta">Logement étudiant</p>
+          <h3><a href="https://diplomeo.com/actualite-crise_logement_etablissements_solutions">Crise du logement : comment les établissements tentent de loger leurs étudiants ?</a></h3>
+          <p>Référents logement, partenariats et résidences construites par les écoles : enquête sur les solutions mises en place face à la pénurie.</p>
+        </article>
+        <article>
+          <p class="meta">Mars 2026</p>
+          <h3><a href="https://diplomeo.com/actualite-parcoursup_staps_droit_medecine_tensions">STAPS, droit, médecine : le défi des formations en tension sur Parcoursup</a></h3>
+          <p>Disparités régionales et stratégies de vœux : ce que vivent les lycéens qui visent les filières les plus demandées, témoignages à l'appui.</p>
+        </article>
+        <article>
+          <p class="meta">Décembre 2025</p>
+          <h3><a href="https://diplomeo.com/actualite-parcoursup_temoignages_lyceens_phase_information">« J'appréhende moins la formulation de mes vœux » : des lycéens racontent la phase d'information Parcoursup 2026</a></h3>
+          <p>Deux lycéens, une terminale générale et un bac STMG, racontent comment ils abordent la découverte des formations.</p>
+        </article>
+        <article>
+          <p class="meta">Octobre 2025</p>
+          <h3><a href="https://diplomeo.com/actualite-etablissements_etudiants_sante_mentale_accompagnement">Comment les établissements accompagnent les étudiants sur la santé mentale ?</a></h3>
+          <p>À l'occasion de la journée mondiale de la santé mentale, enquête sur les dispositifs mis en place par les écoles et les universités, et sur leurs limites.</p>
+        </article>
+        <article>
+          <p class="meta">Avril 2025</p>
+          <h3><a href="https://diplomeo.com/actualite-parcoursup_notes_appreciations_eleves">Notes, appréciations : Parcoursup pousse-t-il les profs à revoir leurs copies ?</a></h3>
+          <p>Élèves et enseignants interrogés sur le poids des bulletins de première et de terminale dans la procédure.</p>
+        </article>
+        <article>
+          <p class="meta">Décembre 2024</p>
+          <h3><a href="https://diplomeo.com/actualite-precarite_etudiante_universite_paris8_banquet_solidaire">Précarité étudiante : à Saint-Denis, l'université Paris VIII organise un banquet solidaire</a></h3>
+          <p>Reportage lors d'un repas solidaire ouvert à tous les étudiants, pour donner la parole à ceux qui se privent faute de moyens.</p>
+        </article>
+        <article>
+          <p class="meta">Octobre 2024</p>
+          <h3><a href="https://diplomeo.com/actualite-cvec_equilibre_fragile_opportunite_fardeau_financier">L'équilibre fragile de la CVEC : entre opportunités et fardeau financier</a></h3>
+          <p>À quoi sert la contribution payée par les étudiants à chaque rentrée ? Enquête auprès des écoles, des étudiants et des syndicats sur l'utilisation de ces fonds.</p>
+        </article>
+        <article>
+          <p class="meta">Juin 2024</p>
+          <h3><a href="https://diplomeo.com/actualite-mon_master_2024_temoignages_resultats">Mon Master 2024 : « J'ai énormément travaillé pour finalement n'être acceptée nulle part »</a></h3>
+          <p>Témoignages à chaud d'étudiants de licence et de BUT à l'annonce des premiers résultats d'admission en master.</p>
+        </article>
+        <article>
+          <p class="meta">Juin 2024</p>
+          <h3><a href="https://diplomeo.com/actualite-parcoursup_2024_temoignages_resultats">Parcoursup 2024 : « Ce système est particulièrement sadique et stressant »</a></h3>
+          <p>Soulagement, attente ou rancœur : lycéens et candidats en réorientation réagissent aux premiers résultats d'admission.</p>
+        </article>
+        <article>
+          <p class="meta">Avril 2024</p>
+          <h3><a href="https://diplomeo.com/actualite-hggsp_aspiration_grandissante_jeunes_geopolitique">HGGSP : l'aspiration grandissante des jeunes pour la géopolitique</a></h3>
+          <p>Enseignants-chercheurs, spécialistes et étudiants racontent l'appétence d'une génération pour la géopolitique, dans un monde où ces questions sont plus que jamais au cœur de l'actualité.</p>
+        </article>
+        <article>
+          <p class="meta">Février 2024</p>
+          <h3><a href="https://diplomeo.com/actualite-mon_master_2024_anatomie_espoir">Mon Master 2024 : anatomie d'un espoir</a></h3>
+          <p>Évolutions de la plateforme, concurrence en droit, ambitions et craintes : les étudiants à l'ouverture de la deuxième édition.</p>
+        </article>
+        <article>
+          <p class="meta">Novembre 2023</p>
+          <h3><a href="https://diplomeo.com/actualite-defaillances_renoncements_destin_mathematiques">Entre défaillances et renoncements : le destin morose des mathématiques</a></h3>
+          <p>Baisse de niveau, écarts entre filles et garçons, réticence des élèves : enquête sur la place des mathématiques, du lycée à l'enseignement supérieur.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="portraits">
+    <div class="wrap">
+      <h2>Portraits</h2>
+      <p class="intro prose">Des parcours d'étudiants, d'apprentis et de volontaires, racontés au plus près de leur histoire.</p>
+      <div class="enquetes">
+        <article>
+          <p class="meta">Service civique</p>
+          <h3><a href="https://diplomeo.com/actualite-sante_mentale_service_civique_tiphanie">« La santé mentale est présente dans tous les aspects de la vie » : rencontre avec Tiphanie, volontaire en service civique à Unis-Cité</a></h3>
+          <p>Pendant huit mois, Tiphanie, 22 ans, a sensibilisé collégiens et lycéens à la santé mentale, au bien-être et aux addictions.</p>
+        </article>
+        <article>
+          <p class="meta">Février 2025</p>
+          <h3><a href="https://diplomeo.com/actualite-interview_sofia_iscom_rentree_decalee">« En communication, il faut savoir écouter les autres avant d'exprimer ses propres idées »</a></h3>
+          <p>Après une première année de médecine, Sofia se réoriente en communication en rentrée décalée. Rencontre.</p>
+        </article>
+        <article>
+          <p class="meta">Octobre 2024</p>
+          <h3><a href="https://diplomeo.com/actualite-portrait_maxim_apprenti_primeur">« Une belle récompense et une expérience enrichissante » : rencontre avec Maxim, apprenti primeur</a></h3>
+          <p>Originaire de Moldavie, Maxim, 22 ans, remporte le prix du Rabelais des jeunes talents.</p>
+        </article>
+        <article>
+          <p class="meta">Juin 2024</p>
+          <h3><a href="https://diplomeo.com/actualite-laureats_meilleurs_apprentis_cremier_fromager_2024">Rencontre avec Margaux et Marius, meilleurs apprentis de France crémier-fromager 2024</a></h3>
+          <p>Deux parcours très différents vers le même métier, racontés par les lauréats.</p>
+        </article>
+        <article>
+          <p class="meta">Février 2024</p>
+          <h3><a href="https://diplomeo.com/actualite-cesure_tour_du_monde_baptiste_walbaum">« J'ai vécu des choses qui m'ont bouleversé et qui m'ont changé » : rencontre avec Baptiste, qui a fait le tour du monde durant sa césure</a></h3>
+          <p>Humanitaire, sport, rencontres : le récit d'une année de césure autour du monde.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="dataviz">
+    <div class="wrap">
+      <h2>Galerie de dataviz</h2>
+      <p class="intro prose">Résultats du bac, logement étudiant, frais de scolarité : des graphiques réalisés avec Datawrapper à partir de données officielles.</p>
+      <div class="gallery">
+        <div class="viz"><iframe title="Dataviz Datawrapper" src="https://datawrapper.dwcdn.net/GyjNa/" scrolling="no" height="480" loading="lazy"></iframe></div>
+        <div class="viz"><iframe title="Dataviz Datawrapper" src="https://datawrapper.dwcdn.net/2tx23/" scrolling="no" height="480" loading="lazy"></iframe></div>
+        <div class="viz"><iframe title="Dataviz Datawrapper" src="https://datawrapper.dwcdn.net/jIyV1/" scrolling="no" height="480" loading="lazy"></iframe></div>
+        <div class="viz"><iframe title="Dataviz Datawrapper" src="https://datawrapper.dwcdn.net/gkFkW/" scrolling="no" height="480" loading="lazy"></iframe></div>
+        <div class="viz"><iframe title="Dataviz Datawrapper" src="https://datawrapper.dwcdn.net/aO9nW/" scrolling="no" height="480" loading="lazy"></iframe></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="methode">
+    <div class="wrap">
+      <h2>Ma méthode</h2>
+      <p class="intro prose">La même exigence, quel que soit le sujet.</p>
+      <ol class="steps">
+        <li><h3>Cadrer</h3><p>Trouver l'angle qui sert le lecteur et définir ce que l'article doit démontrer.</p></li>
+        <li><h3>Enquêter</h3><p>Sources primaires, témoins, experts et données : aller chercher l'information à la source.</p></li>
+        <li><h3>Vérifier</h3><p>Recouper chaque chiffre et chaque citation avant publication.</p></li>
+        <li><h3>Raconter</h3><p>Un texte clair qui guide la lecture, des visuels qui portent le détail.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>Outils</h2>
+      <ul class="tools">
+        <li>Datawrapper</li><li>Python et pandas</li><li>Google Sheets</li><li>Excel</li><li>Claude et skills IA</li><li>WordPress</li><li>SEO</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <p class="contact">Travaillons ensemble</p>
+    <div class="links">
+      <a href="mailto:mehdi.bautier@gmail.com">mehdi.bautier@gmail.com</a>
+      <a href="https://www.linkedin.com/in/mehdi-bautier-5957b1b2/">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Hauteur automatique des graphiques Datawrapper -->
+<script>
+  window.addEventListener("message", function (e) {
+    if (e.data && e.data["datawrapper-height"] !== undefined) {
+      var frames = document.querySelectorAll("iframe");
+      for (var key in e.data["datawrapper-height"]) {
+        for (var i = 0; i < frames.length; i++) {
+          if (frames[i].contentWindow === e.source) {
+            frames[i].style.height = e.data["datawrapper-height"][key] + "px";
+          }
+        }
+      }
+    }
+  });
+</script>
+</body>
+</html>
